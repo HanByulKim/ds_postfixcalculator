@@ -26,6 +26,7 @@ public:
 	}
 	T top(){ return data[tail]; }
 	T pop(){ size--; return data[tail--]; }
+	int sizeis(){ return size; }
 
 private:
 	T* data;
