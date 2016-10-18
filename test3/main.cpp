@@ -35,6 +35,7 @@ void main(){
 		case '/':
 			sum = std::stod(eq.pop()) / std::stod(eq.pop());
 			eq.push(std::to_string(sum));
+
 			break;
 		case '^':
 			sum = pow(std::stod(eq.pop()), std::stod(eq.pop()));
@@ -55,22 +56,31 @@ void main(){
 void postfix(std::string& input, queue<std::string>& postf){
 	stack<std::string> temp;
 	for (int i = 0; i < input.length(); i++){
-		if (input.at(i) == ')'){
+		if (input.at(i) == ')'){	// pop until a left parenthesis exits the stack
 			for (int j = 0; j < temp.sizeis(); j++){
 				postf.push(temp.pop());
 			}
 		}
-		else if (weight_dec(input.at(i)) <= 0)
+		else if (weight_dec(input.at(i)) <= 0) // operand immediately goes to output
 			postf.push(std::to_string(input.at(i)));
-		else if (temp.sizeis()>0 && weight_dec(input.at(i)) <= weight_dec(temp.top().at(0)) && temp.top().at(0) != '('){
-			for (int j = 0; j < temp.sizeis(); j++){
+		else if (temp.sizeis()>0 && weight_dec(input.at(i)) < weight_dec(temp.top().at(0)) && temp.top().at(0) != '('){ // pop all stack symbols until met symbol of lower precedence
+			int s = temp.sizeis();
+			for (int j = 0; j < s; j++){
 				postf.push(temp.pop());
 			}
+			temp.push(std::to_string(input.at(i)));
 		}
-		else if (weight_dec(input.at(i))>0)
+		else if (temp.sizeis()>0 && weight_dec(input.at(i)) == weight_dec(temp.top().at(0)) && temp.top().at(0) != '('){ // equal precedence
+			if (weight_dec(input.at(i)) < 5){ // left associative equal precedence pop once
+				postf.push(temp.pop());
+			}
+			temp.push(std::to_string(input.at(i))); // push current operator(for left and right)
+		}
+		else if (weight_dec(input.at(i))>0) // EoI : pop all remaining operators
 			temp.push(std::to_string(input.at(i)));
 	}
-	for (int j = 0; j < temp.sizeis(); j++){
+	int s = temp.sizeis();
+	for (int j = 0; j < s; j++){
 		postf.push(temp.pop());
 	}
 
