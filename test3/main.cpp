@@ -57,15 +57,16 @@ void postfix(std::string& input, queue<std::string>& postf){
 	stack<std::string> temp;
 	for (int i = 0; i < input.length(); i++){
 		if (input.at(i) == ')'){	// pop until a left parenthesis exits the stack
-			for (int j = 0; j < temp.sizeis(); j++){
+			while (temp.top() != std::to_string('(')){
 				postf.push(temp.pop());
 			}
+			temp.pop();
 		}
 		else if (weight_dec(input.at(i)) <= 0) // operand immediately goes to output
 			postf.push(std::to_string(input.at(i)));
 		else if (temp.sizeis()>0 && weight_dec(input.at(i)) < weight_dec(temp.top().at(0)) && temp.top().at(0) != '('){ // pop all stack symbols until met symbol of lower precedence
 			int s = temp.sizeis();
-			for (int j = 0; j < s; j++){
+			while (weight_dec(temp.top().at(0)) < weight_dec(input.at(i)) ){
 				postf.push(temp.pop());
 			}
 			temp.push(std::to_string(input.at(i)));
@@ -79,6 +80,7 @@ void postfix(std::string& input, queue<std::string>& postf){
 		else if (weight_dec(input.at(i))>0) // EoI : pop all remaining operators
 			temp.push(std::to_string(input.at(i)));
 	}
+	//EOI
 	int s = temp.sizeis();
 	for (int j = 0; j < s; j++){
 		postf.push(temp.pop());

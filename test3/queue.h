@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 template <typename T>
 class queue{
 public:
@@ -28,7 +29,8 @@ public:
 	//T pop(){ size--; return data[tail--]; }
 	void print(){
 		for (int i = 0; i < size; i++)
-			std::cout << data[i] << " ";
+			printf("%c ", data[i]);
+			//std::cout << data[i] << " ";
 		std::cout<<std::endl;
 	}
 	int sizeis(){ return size; }
